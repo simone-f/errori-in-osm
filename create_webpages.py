@@ -5,7 +5,7 @@
    - provides GPX files and JOSM remote links with the errors detected
      by find_errors.py
    - shows errors numbers
-   Optional dependencies: tilemill ed imagemagik if run with option "--map"
+   Optional dependencies: tilemill and imagemagik if run with option "--map"
 """
 
 from subprocess import call
@@ -148,7 +148,7 @@ Gli errori sono visualizzati come file GPX e liste di link OSM / JOSM remote / i
         return news, newChecks
 
     def read_done_checks(self):
-        """Crete a list with names of executed checks by reading the
+        """Create a list with names of executed checks by reading the
            GPX files in './output/gpx'
         """
         print "\n- Leggo i file con le segnalazioni, presenti in './output/gpx'"
@@ -159,7 +159,7 @@ Gli errori sono visualizzati come file GPX e liste di link OSM / JOSM remote / i
         return checks
 
     def checks_per_database(self):
-        """Return a dictionary with the cheks that must be done
+        """Return a dictionary with the checks that must be done
         """
         checksPerDb = {}
         for check in self.checks.values():

@@ -39,8 +39,8 @@ def main(config, downloadOSM, updateOSM, filterOSM, updateDb):
         status = update_country_o5m_with_osmupdate(OSMDIR, country, countryPOLY, countryO5M, oldCountryO5M)
         #status = True       #debug
         if not status:
-            #OSM data are already up to date
-            print "\nOSM data are already up to date."
+            #OSM data is already up to date
+            print "\nOSM data is already up to date."
             return False
 
     if filterOSM:
@@ -65,7 +65,7 @@ def download_country_pbf(country, countryPBF, countryO5M, oldCountryO5M):
     print "\n== Scaricamento dati OSM %s (%s)==" % (country, countryPBF)
     for filename in (countryPBF, countryO5M, oldCountryO5M):
         if os.path.isfile(filename):
-            print "\n- Rrimuovo vecchio file:\n%s" % filename
+            print "\n- Rimuovo vecchio file:\n%s" % filename
             call("rm %s" % filename, shell=True)
     print "\n- Scarico %s" % countryPBF
     url = "http://download.geofabrik.de/europe/%s-latest.osm.pbf" % country
@@ -122,7 +122,7 @@ def update_country_o5m_with_osmupdate(OSMDIR, country, countryPOLY, countryO5M, 
 
 
 def filter_regions(OSMDIR, databases, countryO5M):
-    """Use POLY files to create a region o5M file from national file
+    """Use POLY files to create a region o5m file from national file
     """
     for dbName, database in databases.iteritems():
         if database.zoneType == "region":
@@ -169,7 +169,7 @@ def create_change_files(OSMDIR, databases):
 
 
 def update_db(OSMDIR, databases, (user, password)):
-    """Updata databases with osmosis --rxc
+    """Update databases with osmosis --rxc
     """
     print "\n\n= Aggiorno database ="
     #answer = raw_input("\n- Aggiorno database?[Y/n]")

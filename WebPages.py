@@ -24,7 +24,7 @@ class WebPagesCreator():
             print "  %s" % check.name
             if "Lista" in check.output or "Mappa" in check.output:
                 if "Lista" in check.output:
-                    #Subpage displays errorrs as a list of JOSM remote links
+                    #Subpage displays errors as a list of JOSM remote links
                     subPage = os.path.join("html", "%s.html" % check.name)
                     subPageCode = ListSubpage(check).code
                 if "Mappa" in check.output:

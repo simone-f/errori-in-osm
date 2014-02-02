@@ -124,7 +124,7 @@ class App():
             call('notify-send "Ricerca errori" "Fatto."', shell=True)
 
     def read_checks_to_do(self):
-        """Return a dictionary with the cheks that must be done
+        """Return a dictionary with the checks that must be done
         """
         checksToDo = {"inDatabase": {}, "outOfDatabase": []}
         if self.args.execute_checks\
