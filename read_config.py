@@ -1,7 +1,7 @@
 #! /usr/bin/python
 # -*- coding: utf-8 -*-
 
-"""Read configurations in./configuration/
+"""Read configurations from ./configuration/
 """
 
 import ConfigParser

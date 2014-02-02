@@ -111,11 +111,11 @@ Impostare le voci nel file di configurazione
 --------------------------------------------
 ('Errori_in_Italia_PostGIS/configuration/config')
 
-- osm_dir     = (obbgligatoria) directory in cui verranno scaricati i dati OSM, es. osm_dir = /home/nomeutente/osm_download
-- country     = (obbgligatorio) questo nome sarà usato per scaricare il file country da GEOFABRIK, es. country = italy 
+- osm_dir     = (obbligatoria) directory in cui verranno scaricati i dati OSM, es. osm_dir = /home/nomeutente/osm_download
+- country     = (obbligatorio) questo nome sarà usato per scaricare il file country da GEOFABRIK, es. country = italy
 - dropbox_dir = (opzionale) directory dropbox in cui copiare i file con le segnalazioni, es. dropbox_dir = /home/nomeutente/osm_dropbox_out
-- user        = (obbgligatoria) utente database PostGIS
-- password    = (obbgligatoria)password per database PostGIS
+- user        = (obbligatoria) utente database PostGIS
+- password    = (obbligatoria) password per database PostGIS
 - tilemill_dir = (opzionale) se si lancia l'opzione create_website.py --map e' la dir dove sono presenti progetti Tilemill 
               Usualmente definita come: /home/username/Documenti/MapBox/project
 

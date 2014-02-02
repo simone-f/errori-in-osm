@@ -38,7 +38,7 @@ class App():
                             action="store")
         parser.add_argument("-a",
                             "--ask_before_creating_a_new_db",
-                            help="chiedi prima di iniziare la creazione di un database ocn osmosis",
+                            help="chiedi prima di iniziare la creazione di un database con osmosis",
                             action="store_true")
         self.args = parser.parse_args()
 
