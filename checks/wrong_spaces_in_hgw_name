@@ -1,0 +1,6 @@
+-- credit: Daniele Forsi
+CREATE TABLE wrong_spaces_in_hgw_name AS
+SELECT 'w'||id AS osmid, replace(tags->'name', ' ', '*') AS desc, ST_StartPoint(linestring) AS geometry
+FROM ways
+WHERE
+tags->'name' ~ '^ |.  .| $';

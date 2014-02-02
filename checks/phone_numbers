@@ -1,0 +1,42 @@
+CREATE TABLE phone_numbers AS
+-- phone or contact:phone not starting with "+" or without any space or "-" in it
+-- nodes
+SELECT 'n'||id AS osmid, concat(tags -> 'phone', tags -> 'contact:phone') AS desc, geom AS geometry
+FROM nodes
+WHERE
+geom IS NOT NULL AND (NOT tags ? 'addr:country' OR tags -> 'addr:country' IN ('', 'IT')) AND
+((tags -> 'phone' NOT LIKE '+%' OR
+(NOT tags -> 'phone' ~~ ANY(array['+43%', '+41%', '+386%', '+33%'])
+AND tags -> 'phone' NOT LIKE '% %' AND tags -> 'phone' NOT LIKE '%-%'))
+OR
+(tags -> 'contact:phone' NOT LIKE '+%' OR
+(NOT tags -> 'contact:phone' ~~ ANY(array['+43%', '+41%', '+386%', '+33%'])
+AND tags -> 'contact:phone' NOT LIKE '% %' AND tags -> 'contact:phone' NOT LIKE '%-%')))
+
+-- ways
+UNION ALL
+SELECT 'w'||id AS osmid, concat(tags -> 'phone', tags -> 'contact:phone') AS desc, ST_StartPoint(linestring) AS geometry
+FROM ways
+WHERE
+linestring IS NOT NULL AND (NOT tags ? 'addr:country' OR tags -> 'addr:country' IN ('', 'IT')) AND
+((tags -> 'phone' NOT LIKE '+%' OR
+(NOT tags -> 'phone' ~~ ANY(array['+43%', '+41%', '+386%', '+33%'])
+AND tags -> 'phone' NOT LIKE '% %' AND tags -> 'phone' NOT LIKE '%-%'))
+OR
+(tags -> 'contact:phone' NOT LIKE '+%' OR
+(NOT tags -> 'contact:phone' ~~ ANY(array['+43%', '+41%', '+386%', '+33%'])
+AND tags -> 'contact:phone' NOT LIKE '% %' AND tags -> 'contact:phone' NOT LIKE '%-%')))
+
+-- relations
+UNION ALL
+SELECT 'r'||id AS osmid, concat(tags -> 'phone', tags -> 'contact:phone') AS desc, rel_1member_centroid(id::integer) AS geometry
+FROM relations
+WHERE
+rel_1member_centroid(id::bigint) IS NOT NULL AND (NOT tags ? 'addr:country' OR tags -> 'addr:country' IN ('', 'IT')) AND
+((tags -> 'phone' NOT LIKE '+%' OR
+(NOT tags -> 'phone' ~~ ANY(array['+43%', '+41%', '+386%', '+33%'])
+AND tags -> 'phone' NOT LIKE '% %' AND tags -> 'phone' NOT LIKE '%-%'))
+OR
+(tags -> 'contact:phone' NOT LIKE '+%' OR
+(NOT tags -> 'contact:phone' ~~ ANY(array['+43%', '+41%', '+386%', '+33%'])
+AND tags -> 'contact:phone' NOT LIKE '% %' AND tags -> 'contact:phone' NOT LIKE '%-%')));

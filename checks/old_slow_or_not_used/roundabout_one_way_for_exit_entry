@@ -1,0 +1,13 @@
+CREATE TABLE junctions AS
+SELECT DISTINCT id, unnest(nodes) AS node_id
+FROM ways
+WHERE tags -> 'junction' = 'roundabout';
+CREATE TABLE same_roundabout_exit_entry AS
+SELECT w.id AS id, 'w'::character(1) AS osmobject, ST_Centroid(w.linestring) AS geometry
+FROM ways AS w, junctions AS j1, junctions AS j2
+WHERE
+w.nodes[1] = j1.node_id AND
+w.nodes[array_upper(w.nodes, 1)] = j2.node_id AND
+j1.id = j2.id AND
+w.tags -> 'oneway' = 'yes' AND
+NOT w.tags ? 'roundabout';

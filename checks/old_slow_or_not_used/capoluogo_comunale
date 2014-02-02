@@ -1,0 +1,15 @@
+CREATE VIEW comuni AS
+SELECT r.id, r.tags -> 'name' AS name, ST_Collect(w.linestring) AS geom
+FROM relation_members AS rm, relations as r, ways AS w
+WHERE r.id = rm.relation_id AND r.tags -> 'admin_level' = '8' AND
+w.id = rm.member_id AND
+r.id NOT IN (SELECT relation_id FROM relation_members WHERE member_role = 'admin_centre')
+GROUP BY r.id;
+CREATE VIEW capoluogo_comunale AS
+SELECT 'n'||string_agg(text(n.id), ',') AS osmid, c.tags -> 'name' AS desc, geom AS geometry
+FROM nodes AS n, comuni AS c
+WHERE n.tags ? 'place' AND n.tags -> 'name' = c.name AND ST_Within(n.geom, ST_MakePolygon(ST_LineMerge(c.geom)))
+AND GeometryType(ST_LineMerge(c.geom)) = 'LINESTRING' AND
+ST_Isclosed(ST_LineMerge(c.geom))
+GROUP BY c.name HAVING Count(c.name) = 1;
+

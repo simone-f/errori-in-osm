@@ -1,0 +1,26 @@
+CREATE TABLE wrong_roundabout_exit_entry AS
+SELECT DISTINCT w1.id AS id, 'w'::character(1) AS osmobject, ST_Centroid(w1.linestring) AS geometry
+FROM ways AS w1, ways AS w2, ways AS w3
+WHERE
+w2.nodes[1] = w1.nodes[1] AND
+w1.nodes[1] <> ANY(w3.nodes) AND 
+w1.nodes[array_upper(w1.nodes, 1)] = ANY(w3.nodes) AND 
+w2.nodes[array_upper(w2.nodes, 1)] = ANY(w3.nodes) AND
+w3.tags -> 'junction' = 'roundabout' AND
+w1.tags -> 'oneway' = 'yes' AND w2.tags -> 'oneway' = 'yes' AND
+w1.id <> w2.id AND w3.id NOT IN (w1.id, w2.id) AND
+NOT w1.tags -> 'junction' = 'roundabout' AND
+NOT w2.tags -> 'junction' = 'roundabout'
+UNION
+SELECT DISTINCT w1.id AS id, 'w'::character(1) AS osmobject, ST_Centroid(w1.linestring) AS geometry
+FROM ways AS w1, ways AS w2, ways AS w3
+WHERE
+w2.nodes[array_upper(w2.nodes, 1)] = w1.nodes[array_upper(w1.nodes, 1)] AND
+w2.nodes[array_upper(w2.nodes, 1)] <> ANY(w3.nodes) AND
+w1.nodes[array_lower(w1.nodes, 1)] = ANY(w3.nodes) AND
+w2.nodes[array_lower(w2.nodes, 1)] = ANY(w3.nodes) AND
+w3.tags -> 'junction' = 'roundabout' AND
+w1.tags -> 'oneway' = 'yes' AND w2.tags -> 'oneway' = 'yes' AND
+w1.id <> w2.id AND w3.id NOT IN (w1.id, w2.id) AND
+NOT w1.tags -> 'junction' = 'roundabout' AND
+NOT w2.tags -> 'junction' = 'roundabout';

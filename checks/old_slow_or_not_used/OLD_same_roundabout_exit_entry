@@ -1,0 +1,9 @@
+CREATE TABLE same_roundabout_exit_entry AS
+SELECT w1.id AS id, 'w'::character(1) AS osmobject, ST_Centroid(w1.linestring) AS geometry
+FROM ways AS w1, ways AS w3
+WHERE
+w1.nodes[1] = ANY(w3.nodes) AND
+w1.nodes[array_upper(w1.nodes, 1)] = ANY(w3.nodes) AND
+w3.tags -> 'junction' = 'roundabout' AND
+w1.tags -> 'oneway' = 'yes' AND
+w1.id <> w3.id;

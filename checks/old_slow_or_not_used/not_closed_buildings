@@ -1,0 +1,5 @@
+CREATE VIEW not_closed_buildings AS
+SELECT id, 'w'::character(1) AS osmobject, ST_Centroid(linestring) AS geometry
+FROM ways
+WHERE tags ? 'building'
+AND NOT ST_Isclosed(linestring);

@@ -1,0 +1,78 @@
+body {
+  font-family: "Lucida Grande", Verdana, Geneva, Lucida, Arial, Helvetica, sans-serif;
+  margin-top: 1em;
+  margin-left: 2.5em;
+  margin-right: 2.5em;
+}
+
+a:link {text-decoration:none;}
+a:hover {text-decoration:underline;}
+
+#update{
+  position: absolute;
+  top: 0em;
+  right: 1em;
+  z-index: 100;
+  font-size: 90%
+}
+
+div#go_home {
+    float: left;
+    font-size : 80%;
+    margin-bottom: 1em;
+}
+
+div#content {
+    clear: left;
+}
+
+#info{
+  font-size: 90%
+}
+
+h1 {
+  font: 'Lucida Grande', Verdana, Geneva, Lucida, Arial, Helvetica, sans-serif;
+}
+
+
+table, table td, table th {
+  border: 1px solid #ddd;
+  border-collapse:collapse;
+  padding:.4em .5em;
+  font-size: 90%;
+}
+table th {
+  text-align: center;
+  font-weight: bold;
+  background: #eee;
+}
+
+
+#checks_table td:nth-child(1){
+  text-align: center;
+}
+#checks_table td:nth-child(3){
+  text-align: center;
+  font-weight: bold;
+  font-size: 105%;
+}
+#checks_table td:nth-child(4){
+  text-align: right;
+}
+
+#counts_table {
+  text-align: right;
+}
+#counts_table td:nth-child(1){
+  text-align: left;
+}
+
+#map {
+  width: 100%;
+  height: 100%;
+  margin: 20px;
+}
+
+#counters {
+  margin-bottom: 1em;
+}

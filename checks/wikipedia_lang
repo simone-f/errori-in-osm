@@ -1,0 +1,18 @@
+CREATE TABLE wikipedia_lang AS
+SELECT 'n'||id AS osmid, tags -> 'wikipedia'::character(9) AS desc, geom AS geometry
+FROM nodes
+WHERE
+geom IS NOT NULL AND
+tags->'wikipedia' NOT LIKE '%:%'
+UNION ALL
+SELECT 'w'||id AS osmid, tags -> 'wikipedia'::character(9) AS desc, ST_StartPoint(linestring) AS geometry
+FROM ways
+WHERE
+linestring IS NOT NULL AND
+tags->'wikipedia' NOT LIKE '%:%'
+UNION ALL
+SELECT 'r'||id AS osmid, tags -> 'wikipedia'::character(9) AS desc, rel_1member_centroid(id::integer) AS geometry
+FROM relations
+WHERE
+rel_1member_centroid(id::bigint) IS NOT NULL AND
+tags->'wikipedia' NOT LIKE '%:%';

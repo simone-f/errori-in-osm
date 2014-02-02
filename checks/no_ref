@@ -1,0 +1,19 @@
+CREATE TABLE no_ref AS
+SELECT 'w'||id AS osmid, tags -> 'name' AS desc, ST_StartPoint(linestring) AS geometry
+FROM ways
+WHERE tags ->'highway' IN (
+'residential',
+'unclassified',
+'tertiary',
+'tertiary_link',
+'secondary',
+'secondary_link',
+'primary',
+'primary_link',
+'trunk',
+'trunk_link'
+'motorway',
+'motorway_link') AND
+NOT tags ?| ARRAY['ref', 'reg_ref', 'loc_ref', 'old_ref', 'official_ref'] AND
+tags -> 'name' ~~ any(ARRAY['sp%', 'ss%', 's.p.%', 'SS%', 'S.S.%', 'SP%', 'S.P.%']) AND
+tags -> 'name' ~ '[[:digit:]]';

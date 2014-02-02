@@ -1,0 +1,5 @@
+CREATE TABLE duplicate_build_land_barr_nodes AS
+SELECT DISTINCT ON (unnest(array_agg(geom))) 'n'||unnest(array_agg(id)) AS osmid, 'dupe node'::character(12) AS desc, unnest(array_agg(geom)) AS geometry
+FROM nodes
+GROUP BY ST_X(geom), ST_Y(geom)
+HAVING Count(*) > 1;

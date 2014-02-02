@@ -1,0 +1,6 @@
+Per escludere degli elementi OSM dalle segnalazioni (falsi positivi) crea in questa directory un file, es. "name_via", contenente la lista di OSM id, con l'iniziale del tipo di elemento. Es.:
+
+n123
+w432543
+w3443
+n3344

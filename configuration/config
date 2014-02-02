@@ -1,0 +1,18 @@
+[general]
+#osm_dir (necessary), directory where the OSM data will be downloaded
+osm_dir = 
+
+#this name will be used to download country file from GEOFABRIK
+country = italy
+
+#dropbox_dir (necessary if options "create_website.py --copy_to")
+#directory where html, css, gpx and png files will be copied (for web pages)
+dropbox_dir = 
+
+#tilemill_dir (necessary if option "create_website.py --map"), directory
+#where tilemill projects have been created (usually something like '/home/username/Documenti/MapBox/project')
+tilemill_dir = 
+
+[database_access]
+user = 
+password = 

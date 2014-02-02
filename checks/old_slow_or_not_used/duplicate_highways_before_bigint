@@ -1,0 +1,6 @@
+CREATE VIEW duplicate_highways AS
+SELECT DISTINCT ON (unnest(array_agg(linestring))) 'w'||unnest(array_agg(id)) AS osmid, 'dupe high'::character(9) AS desc, ST_Centroid(unnest(array_agg(linestring))) AS geometry
+FROM ways
+WHERE tags ? 'highway'
+GROUP BY sort(nodes::int[])
+HAVING Count(*) <> 1;

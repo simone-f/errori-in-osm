@@ -1,0 +1,6 @@
+CREATE TABLE small_buildings AS
+SELECT id, 'w'::character(1) AS osmobject, ST_Centroid(linestring) AS geometry
+FROM ways
+WHERE tags ? 'building' AND
+array_length(ways.nodes, 1) < 3 AND
+GeometryType(ST_Centroid(linestring)) = 'POINT';

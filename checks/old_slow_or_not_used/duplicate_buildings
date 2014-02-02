@@ -1,0 +1,14 @@
+CREATE TABLE doppi AS
+SELECT unnest(array_agg(id)) AS id
+FROM ways
+GROUP BY linestring HAVING Count(linestring) <> 1;
+
+CREATE INDEX ON doppi (id);
+
+CREATE TABLE duplicate_buildings AS
+SELECT w1.id AS id, 'w'::character(1) AS osmobject, ST_Centroid(w1.linestring) AS geometry
+FROM ways AS w1, ways AS w2
+WHERE w1.id IN (SELECT id FROM doppi)
+AND w2.id IN (SELECT id FROM doppi)
+AND ST_Equals(w1.linestring, w2.linestring)
+AND w1.id <> w2.id;

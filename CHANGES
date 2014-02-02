@@ -1,0 +1,112 @@
+v0.4
+- (Thanks to Daniele Forsi) The user can now flag an error as false positive, by clicking on the apposite link in errors lists
+- New check on highways links missing oneway tag
+- Code refactorization, fixes and clean up
+
+v0.3.8
+- At the end of errors detecting filter those falling inside Italian borders
+- Use the new GEOFABRIK's naming convention: country-latest.osm.pbf
+- Fix bug reported by Daniele Forsi regarding phone numbers falling outside of Italian borders
+
+v0.3.7
+- update_osm.py: simplified and 
+- create_database.py: do not ask for user interaction by default
+
+v0.3.6.3
+Minor changes to webpages:
+- added OpenStreetMap data attribution
+- changed titles from "Errori in OSM" to "Errori in OSM in Italia"
+- Sudtirol --> Südtirol
+
+v0.3.6.2
+- fix bug: ogr2ogr doesn't export empty geometries
+- fix bug: missing SRID in geometries of errors from OSM Inspector (wfs imported with ogr2ogr)
+- minor fixes
+
+v0.3.6.1
+- README.md: aggiornato
+
+v0.3.6
+- create_database.py: aggiunto opzione -u per aggiornare i dati con osmupdate prima di creare i database
+- README.md: aggiunto dipendenze postgresql-contrib e gpsbabel
+
+v0.3.5
+- uniformato convenzione y/n per domande in raw_input() (segnalazione marco braida)
+- aggiunto opzione --print_checks a find_errors.py
+- integrazioni file README.md (marco braida)
+
+v0.3.4
+- README trasformato in README.md ed aggiunto informazioni riguardanti la procedurea di aggiornamento dei database
+- lonely_nodes:
+  - corretto bug per rimozione file vecchi (segnalazione marco braida)
+  - modificato per usare nuova opzione osmconvert --subtract. Più veloce ed evita di creare voluminoso file OSC
+
+v. 0.3.3.1
+- corretto bug che rendeva impossibile "create_database -d nomedatabase" (segnalazione marco braida)
+
+v. 0.3.3
+- trasferito altri shp e poly con confini territoriali in file a parte
+- modificato procedura creazione cartine tramite tilemill, in modo che basti creare solo 2 progetti invece di 7
+- aggiunto avvisi se create_webpages.py e create_databases.py non lanciati da terminale (segnalazione marco braida)
+
+v. 0.3.2
+- Correzioni ed integrazioni file README (marco braida)
+- Gli shape file vanno scaricati a parte, manualmente, come indicato nella seizone "Dati necessari", più sotto
+- usa os.path.join() per i percorsi di file e directory
+
+v. 0.3.1
+- Se un errore cade fuori dallo shape ISTAT regionale fallo apparire lo stesso in pagina web in regione 'Altro'
+
+v. 0.3.0
+- rifattorizzazione
+- aggiunto controllo missing_no_turn_on_roundabout_exit
+
+v. 0.2.7.1
+- corretto bugs e formattazione
+
+v. 0.2.7
+- esecuzione script lanciandoli da altre dir
+- modificato opzioni script
+- controllo disconnected_highways:
+  - considera corrette anche way in cui il nodo non sia più primo o ultimo
+  - aggiunto nei popup link ad OSM Inspector
+- controllo name_via: considera errore name="FIX ME"
+
+v. 0.2.6
+- aggiunto in controllo rotatorie, uscite ed entrate mappate con un'unica way non a senso unico
+- aggiunto controllo spazi sbagliati in nomi di strade (Daniele Forsi)
+
+v. 0.2.5.1
+- disconnected_highways: non mostra le strade non connesse corrette perché nodo cancellato
+
+v. 0.2.5
+- disconnected_highways usa OpenLayers 2.12
+- disconnected_highways: anche senza l'aggiornamento di OSM Inspector vengono eliminati gli errori corretti (nodi che ora appartengono a due way)
+- separato database highway_wikipedia_phoone in due database distinti
+- corretto bugs
+
+v. 0.2.4
+- aggiunto segnalazione: strade importanti non connesse, da OSM Inspector con mappa OpenLayers
+- aggiunto segnalazione: strade con probabile ref nel nome, ma senza tag 'ref=*'
+- modifcato script per creare pagina con mappe OpenLayers
+- corretto bug: copia gpx in html/gpx
+
+v. 0.2.3
+- rifattorizzazione crea_html.py
+- aggiunto numero errori a fianco del nome di una regione
+
+v. 0.2.2
+- esteso liste di tags per regione a tutti i controlli nazionali
+- spostato proprietà dei controlli su file config
+- aggiunto opzione trova_errori.py -c, per eseguire un solo controllo
+
+v. 0.2.1
+- controlla che il server PostgreSQL sia avviato
+- mostra segnalazioni dei tags suddivise per regione (serve psycopg2)
+- corretto bugs: link OSM e JOSM si aprono su pagina nuova
+
+v. 0.2.0
+- name_via con espressioni regolari (Daniele Forsi)
+- colonna OSM link
+- info, attribuzioni
+- corretto bugs: creazione database, gpx per Tilemill

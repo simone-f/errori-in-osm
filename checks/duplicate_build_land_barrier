@@ -1,0 +1,18 @@
+CREATE TABLE duplicate_build_land_barrier AS
+SELECT DISTINCT ON (unnest(array_agg(linestring))) 'w'||unnest(array_agg(id)) AS osmid, 'dupe way'::character(6) AS desc, ST_StartPoint(unnest(array_agg(linestring))) AS geometry
+FROM ways
+WHERE tags ? 'building'
+GROUP BY ARRAY(SELECT UNNEST(nodes::bigint[]) ORDER BY 1)
+HAVING Count(*) <> 1
+UNION ALL
+SELECT DISTINCT ON (unnest(array_agg(linestring))) 'w'||unnest(array_agg(id)) AS osmid, 'dupe way'::character(6) AS desc, ST_StartPoint(unnest(array_agg(linestring))) AS geometry
+FROM ways
+WHERE tags ? 'landuse' OR tags = ''
+GROUP BY ARRAY(SELECT UNNEST(nodes::bigint[]) ORDER BY 1)
+HAVING Count(*) <> 1
+UNION ALL
+SELECT DISTINCT ON (unnest(array_agg(linestring))) 'w'||unnest(array_agg(id)) AS osmid, 'dupe way'::character(6) AS desc, ST_StartPoint(unnest(array_agg(linestring))) AS geometry
+FROM ways
+WHERE tags ? 'barrier' OR tags = ''
+GROUP BY ARRAY(SELECT UNNEST(nodes::bigint[]) ORDER BY 1)
+HAVING Count(*) <> 1;

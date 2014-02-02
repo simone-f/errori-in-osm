@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" xmlns:xlink="http://www.w3.org/1999/xlink">
+<defs>
+<filter width="1.211" x="-.106" y="-.181" height="1.362" id="filter4224">
+<feGaussianBlur stdDeviation="1.15152"/>
+</filter>
+<filter id="filter4475">
+<feGaussianBlur stdDeviation="5.42528"/>
+</filter>
+<filter id="filter4140">
+<feGaussianBlur stdDeviation="19.80952"/>
+</filter>
+<filter width="1.281" x="-.14" y="-.16" height="1.32" id="filter4471">
+<feGaussianBlur stdDeviation="5.42528"/>
+</filter>
+<linearGradient id="linearGradient4192">
+<stop offset="0" stop-color="#d5e5ff"/>
+<stop offset="1" stop-color="#d5e5ff" stop-opacity="0"/>
+</linearGradient>
+<linearGradient gradientTransform="matrix(.89441 0 0 1 7.05364 0)" xlink:href="#linearGradient4192" id="linearGradient2862" y1="5.455" x1="76.909" y2="17.818" gradientUnits="userSpaceOnUse" x2="75.273"/>
+</defs>
+<path fill="#3771c8" stroke="#204a87" stroke-linejoin="round" stroke-width="10.631" d="m480,448.0765a281.4286,267.1429 0 1,1 -562.8571,0 281.4286,267.1429 0 1,1 562.8571,0z" transform="matrix(.09406 0 0 .09406 14.04881 -10.87524)"/>
+<path fill="#3465a4" filter="url(#filter4140)" d="m480,448.0765a281.4286,267.1429 0 1,1 -562.8571,0 281.4286,267.1429 0 1,1 562.8571,0z" transform="matrix(.08696 0 0 .08696 15.45997 -7.69094)"/>
+<g fill="#333">
+<path filter="url(#filter4471)" stroke="#484ba6" stroke-linejoin="round" stroke-width="4.89" d="m368.5714,308.0765a44.2857,38.5714 0 1,1 -88.5714,0 44.2857,38.5714 0 1,1 88.5714,0z" transform="matrix(.09406 0 0 .09406 1.81091 -10.91344)"/>
+<path filter="url(#filter4475)" fill-rule="evenodd" stroke="#3b3f82" stroke-width="6.522" d="m-575.8368,339.5892 .7143,41.4286 31.4286,0 0,120-45.7143,1.4286 0,58.5714 148.5714-2.8571 0-60-35.7143,.7143 1.4286-157.8571-100.7143-1.4286z" transform="matrix(.09406 0 0 .09406 80.96877 -7.38143)"/>
+</g>
+<path fill="#fff" fill-rule="evenodd" stroke="#3b3f82" stroke-width=".038" d="m25.8529,25.5119 .0672,3.897 2.9563,0 0,11.2877-4.3001,.1344 0,5.5095 13.9752-.2687 0-5.6439-3.3594,.0672 .1344-14.8487-9.4736-.1344z"/>
+<path fill="url(#linearGradient2862)" filter="url(#filter4224)" d="m88.3636,10.1818a13.0909,7.6364 0 1,1 -26.1818,0 13.0909,7.6364 0 1,1 26.1818,0z" transform="matrix(1.11806 0 0 1 -50.06818 6.18182)"/>
+<path fill="#fff" stroke="#484ba6" stroke-linejoin="round" stroke-width=".411" d="m368.5714,308.0765a44.2857,38.5714 0 1,1 -88.5714,0 44.2857,38.5714 0 1,1 88.5714,0z" transform="matrix(.09406 0 0 .09406 .86071 -9.96325)"/>
+</svg>

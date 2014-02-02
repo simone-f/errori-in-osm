@@ -1,0 +1,18 @@
+CREATE VIEW name_via AS
+SELECT 'w'||id AS osmid, tags -> 'name'::character(4) AS desc, ST_Centroid(linestring) AS geometry
+FROM ways
+WHERE tags ? 'name' AND tags->'highway' IN (
+'residential',
+'unclassified',
+'tertiary',
+'tertiary_link',
+'secondary',
+'secondary_link',
+'primary',
+'primary_link',
+'trunk',
+'trunk_link'
+'motorway',
+'motorway_link') AND
+tags -> 'name' ~~ any(ARRAY['VIa %', 'VIA %', 'P.zza %', 'p.zza %', 'P.za %', 'p.za %', 'V.le %', 'fixme', 'FIXME', 'Fixme', 'FixMe']);
+

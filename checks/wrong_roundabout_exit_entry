@@ -1,0 +1,41 @@
+-- create a view with all junctions
+CREATE VIEW junctions AS
+SELECT DISTINCT id, unnest(nodes) AS node_id
+FROM ways
+WHERE tags -> 'junction' = 'roundabout';
+
+-- error type: more than 1 exit converging to the same node
+CREATE TABLE wrong_roundabout_exit_entry AS
+SELECT 'w'||unnest(array_agg(w.id)) AS osmid, 'wrong round'::character(11) AS desc, unnest(array_agg(ST_StartPoint(w.linestring))) AS geometry
+FROM ways AS w, junctions AS j
+WHERE
+w.tags -> 'highway' NOT IN ('path', 'footway', 'cycleway', 'steps', 'pedestrian') AND
+w.nodes[1] = j.node_id AND
+NOT w.tags ? 'junction' AND
+w.tags -> 'oneway' = 'yes'
+GROUP BY w.nodes[array_upper(w.nodes, 1)], j.id
+HAVING Count(*) > 1
+
+-- error type: more than 1 entry diverging from the same node
+UNION ALL
+SELECT 'w'||unnest(array_agg(w.id)) AS osmid, 'wrong round'::character(11) AS desc, unnest(array_agg(ST_StartPoint(w.linestring))) AS geometry
+FROM ways AS w, junctions AS j
+WHERE
+w.tags -> 'highway' NOT IN ('path', 'footway', 'cycleway', 'steps', 'pedestrian') AND
+w.nodes[array_upper(w.nodes, 1)] = j.node_id AND
+NOT w.tags ? 'junction' AND
+w.tags -> 'oneway' = 'yes'
+GROUP BY w.nodes[1], j.id
+HAVING Count(*) > 1
+
+-- only one way for exit and entry, not oneway
+UNION ALL
+SELECT 'w'||w.id AS osmid, 'wrong round'::character(11) AS desc, ST_StartPoint(w.linestring) AS geometry
+FROM ways AS w, junctions AS j1, junctions AS j2
+WHERE
+w.tags -> 'highway' NOT IN ('path', 'footway', 'cycleway', 'steps', 'pedestrian') AND
+w.nodes[1] = j1.node_id AND
+w.nodes[array_upper(w.nodes, 1)] = j2.node_id AND
+j1.id = j2.id AND
+NOT w.tags ? 'junction' AND NOT
+w.tags ? 'oneway';

@@ -1,0 +1,15 @@
+CREATE TABLE building_nodes AS
+SELECT DISTINCT unnest(nodes) AS id
+FROM ways
+WHERE tags ? 'building' OR tags ? 'landuse';
+
+CREATE INDEX ON building_nodes (id);
+
+ANALYSE building_nodes;
+
+CREATE TABLE duplicate_buildings_nodes AS
+SELECT unnest(array_agg(n.id)) AS id, 'n'::varchar(1) AS osmobject, unnest(array_agg(n.geom)) AS geometry
+FROM nodes AS n
+LEFT JOIN building_nodes AS b ON n.id = b.id
+WHERE b.id IS NOT NULL GROUP BY ST_X(n.geom), ST_Y(n.geom)
+HAVING Count(*) > 1;

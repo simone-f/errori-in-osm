@@ -1,0 +1,5 @@
+CREATE TABLE duplicate_highways AS
+SELECT DISTINCT ON (unnest(array_agg(linestring))) 'w'||unnest(array_agg(id)) AS osmid, 'duplicate highway'::character(17) AS desc, ST_StartPoint(unnest(array_agg(linestring))) AS geometry
+FROM ways
+GROUP BY ARRAY(SELECT UNNEST(nodes::bigint[]) ORDER BY 1)
+HAVING Count(*) <> 1;

@@ -1,0 +1,38 @@
+CREATE TABLE wrong_refs AS
+SELECT 'w'||id AS osmid, concat(tags->'ref',tags->'reg_ref',tags->'loc_ref',tags->'old_ref',tags->'official_ref') AS desc, ST_StartPoint(linestring) AS geometry
+FROM ways
+WHERE tags ?| ARRAY['ref', 'reg_ref', 'loc_ref', 'old_ref', 'official_ref']
+AND tags ->'highway' IN (
+'residential',
+'unclassified',
+'tertiary',
+'tertiary_link',
+'secondary',
+'secondary_link',
+'primary',
+'primary_link',
+'trunk',
+'trunk_link'
+'motorway',
+'motorway_link') AND
+(CASE WHEN tags ? 'ref'
+THEN
+tags -> 'ref' ~~ any(ARRAY['Sp%','S.p.%','sp%','s.p.%','Ss%','S.s.%','ss%','s.s.%','Sr%','S.r.%','sr%','s.r.%','S.P.%','S.S.%','S.R.%','SP %','SR %','SS %','via %','Via %'])
+END
+OR CASE WHEN tags ? 'reg_ref'
+THEN
+tags -> 'reg_ref' ~~ any(ARRAY['Sp%','S.p.%','sp%','s.p.%','Ss%','S.s.%','ss%','s.s.%','Sr%','S.r.%','sr%','s.r.%','S.P.%','S.S.%','S.R.%','SP %','SR %','SS %','via %','Via %'])
+END
+OR CASE WHEN tags ? 'loc_ref'
+THEN
+tags -> 'loc_ref' ~~ any(ARRAY['Sp%','S.p.%','sp%','s.p.%','Ss%','S.s.%','ss%','s.s.%','Sr%','S.r.%','sr%','s.r.%','S.P.%','S.S.%','S.R.%','SP %','SR %','SS %','via %','Via %'])
+END
+OR CASE WHEN tags ? 'old_ref'
+THEN
+tags -> 'old_ref' ~~ any(ARRAY['Sp%','S.p.%','sp%','s.p.%','Ss%','S.s.%','ss%','s.s.%','Sr%','S.r.%','sr%','s.r.%','S.P.%','S.S.%','S.R.%','SP %','SR %','SS %','via %','Via %'])
+END
+OR CASE WHEN tags ? 'official_ref'
+THEN
+tags -> 'official_ref' ~~ any(ARRAY[ 'Sp%','S.p.%','sp%','s.p.%','Ss%','S.s.%','ss%','s.s.%','Sr%','S.r.%','sr%','s.r.%','S.P.%','S.S.%','S.R.%','SP %','SR %','SS %','via %','Via %'])
+END) AND
+linestring IS NOT NULL;

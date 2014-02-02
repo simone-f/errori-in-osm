@@ -1,0 +1,72 @@
+CREATE OR REPLACE VIEW junctions AS
+SELECT DISTINCT id, unnest(nodes) AS node_id
+FROM ways
+WHERE tags -> 'junction' = 'roundabout';
+
+-- crea tabella con way entranti in rotatoria senza turn sul primo nodo
+DROP TABLE IF EXISTS all_roundabout_entry_without_turn;
+CREATE TABLE all_roundabout_entry_without_turn AS
+SELECT w2.id AS entry_id
+FROM ways AS w1, ways AS w2, junctions AS j1, junctions AS j2
+WHERE
+  w1.nodes[1] = j1.node_id AND
+  w1.nodes[array_upper(w1.nodes, 1)] = w2.nodes[1] AND
+  w2.nodes[array_upper(w2.nodes, 1)] = j2.node_id AND
+  j1.id = j2.id AND
+  NOT w1.tags ? 'junction' AND
+  NOT w2.tags ? 'junction' AND
+  w1.tags -> 'oneway' <> 'no' AND
+  w2.tags -> 'oneway' <> 'no' AND
+  w2.nodes[1] NOT IN (SELECT member_id
+FROM relation_members WHERE member_type = 'N');
+CREATE INDEX ON all_roundabout_entry_without_turn (entry_id);
+ANALYZE all_roundabout_entry_without_turn;
+
+-- crea tabella con nodi delle way entranti, tranne primo ed ultimo
+DROP TABLE IF EXISTS all_roundabout_entry_without_turn_nodes;
+CREATE TABLE all_roundabout_entry_without_turn_nodes AS
+SELECT unnest(w.nodes[2:array_upper(w.nodes, 1)-1]) AS nid, e.entry_id AS entryid
+FROM all_roundabout_entry_without_turn AS e, ways AS w
+WHERE w.id = e.entry_id;
+CREATE INDEX ON all_roundabout_entry_without_turn_nodes (nid);
+CREATE INDEX ON all_roundabout_entry_without_turn_nodes (entryid);
+ANALYZE all_roundabout_entry_without_turn_nodes;
+
+-- trova primo nodo delle way entranti che hanno nodi appartenenti a più way
+-- laterali, non entranti ed a senso unico
+DROP TABLE IF EXISTS turn_errors;
+CREATE TABLE turn_errors AS
+SELECT w.nodes[1] AS id
+FROM ways AS w
+JOIN (
+  SELECT e.entryid AS id
+  FROM way_nodes, all_roundabout_entry_without_turn_nodes AS e, ways AS lat
+  WHERE node_id = e.nid AND
+  way_id = lat.id AND
+  lat.tags -> 'highway' NOT IN ('footway', 'path', 'cycleway') AND
+  lat.id <> e.entryid AND
+  CASE
+    WHEN NOT lat.tags ? 'oneway'
+      THEN TRUE
+    WHEN lat.tags -> 'oneway'='no'
+      THEN TRUE
+    WHEN lat.tags -> 'oneway'='yes'
+      THEN sequence_id = 0
+    WHEN lat.tags -> 'oneway' = '-1'
+      THEN sequence_id = array_upper(lat.nodes, 1) -1
+  END
+  GROUP BY e.entryid ORDER BY e.entryid
+  ) AS wrong_entry ON (wrong_entry.id = w.id);
+CREATE INDEX ON turn_errors (id);
+ANALYZE turn_errors;
+
+-- rimuovi casi in cui l'entrata sia l'unica strada a cui sia collegata l'uscita
+DROP TABLE IF EXISTS missing_no_turn_on_roundabout_exit;
+CREATE TABLE missing_no_turn_on_roundabout_exit AS
+SELECT 'n'||n.id AS osmid, 'no turn' AS desc, n.geom AS geometry
+FROM nodes AS n
+WHERE n.id IN (SELECT wn.node_id
+FROM way_nodes AS wn
+  JOIN turn_errors AS error ON (error.id = wn.node_id)
+GROUP BY wn.node_id
+HAVING Count(wn.node_id) > 2);

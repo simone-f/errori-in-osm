@@ -1,0 +1,30 @@
+CREATE TABLE phone_numbers AS
+SELECT 'n'||id AS osmid, concat(tags -> 'phone', tags -> 'contact:phone') AS desc, geom AS geometry
+FROM nodes
+WHERE
+geom IS NOT NULL AND
+((tags -> 'phone' NOT LIKE '+%' OR
+(tags -> 'phone' NOT LIKE '% %' AND tags -> 'phone' NOT LIKE '%-%'))
+OR
+(tags -> 'contact:phone' NOT LIKE '+%' OR
+(tags -> 'contact:phone' NOT LIKE '% %' AND tags -> 'contact:phone' NOT LIKE '%-%')))
+UNION ALL
+SELECT 'w'||id AS osmid, concat(tags -> 'phone', tags -> 'contact:phone') AS desc, ST_Centroid(linestring) AS geometry
+FROM ways
+WHERE
+linestring IS NOT NULL AND
+((tags -> 'phone' NOT LIKE '+%' OR
+(tags -> 'phone' NOT LIKE '% %' AND tags -> 'phone' NOT LIKE '%-%'))
+OR
+(tags -> 'contact:phone' NOT LIKE '+%' OR
+(tags -> 'contact:phone' NOT LIKE '% %' AND tags -> 'contact:phone' NOT LIKE '%-%')))
+UNION ALL
+SELECT 'r'||id AS osmid, concat(tags -> 'phone', tags -> 'contact:phone') AS desc, rel_1member_centroid(id::integer) AS geometry
+FROM relations 
+WHERE
+rel_1member_centroid(id::bigint) IS NOT NULL AND
+((tags -> 'phone' NOT LIKE '+%' OR
+(tags -> 'phone' NOT LIKE '% %' AND tags -> 'phone' NOT LIKE '%-%'))
+OR                                                                  
+(tags -> 'contact:phone' NOT LIKE '+%' OR
+(tags -> 'contact:phone' NOT LIKE '% %' AND tags -> 'contact:phone' NOT LIKE '%-%')));

@@ -1,0 +1,8 @@
+CREATE TABLE lonely_nodes AS
+SELECT n.id AS id, 'n'::character(1) AS osmobject, geom AS geometry
+FROM nodes AS n
+LEFT JOIN way_nodes ON n.id = way_nodes.node_id
+LEFT JOIN relation_members ON n.id = member_id AND member_type = 'N'
+WHERE way_nodes.node_id IS NULL
+AND member_id IS NULL
+AND n.tags = '';
