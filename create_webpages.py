@@ -99,7 +99,10 @@ Gli errori sono visualizzati come file GPX e liste di link OSM / JOSM remote / i
         for check in self.checks.values():
             if "GPX" in check.output:
                 outGpx = os.path.join("output", "gpx", "%s.gpx" % check.name)
-                htmlGpx = os.path.join("html", "gpx", "%s.gpx" % check.name)
+                gpxDir = os.path.join("html", "gpx")
+                if not os.path.exists(gpxDir):
+                    os.makedirs(gpxDir)
+                htmlGpx = os.path.join(gpxDir, "%s.gpx" % check.name)
                 call('cp %s %s' % (outGpx, htmlGpx), shell=True)
 
             if "Mappa" in check.output:

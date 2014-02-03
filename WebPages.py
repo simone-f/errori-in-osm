@@ -29,7 +29,10 @@ class WebPagesCreator():
                     subPageCode = ListSubpage(check).code
                 if "Mappa" in check.output:
                     #Subpage displays errors on a clickable map with JOSM remote links
-                    subPage = os.path.join("html", check.name, "%s.html" % check.name)
+                    subPageDir = os.path.join("html", check.name)
+                    subPage = os.path.join(subPageDir, "%s.html" % check.name)
+                    if not os.path.exists(subPageDir):
+                        os.makedirs(subPageDir)
                     subPageCode = MapSubpage(check).code
                 self.save_html_file(subPage, subPageCode)
 
