@@ -292,29 +292,24 @@ Gli errori sono visualizzati come file GPX e liste di link OSM / JOSM remote / i
         #dates = ["date1", "date2", ...]
         #days = [{"check1": errors number, "check2": errors number,...},
         #        ...]
-        fileName = os.path.join("stats", "stats.csv")
-        if not os.path.exists(fileName):
-            dates = []
-            days = []
-            return (dates, days)
-
-        ifile = open(fileName, "r")
-        reader = csv.reader(ifile, delimiter='\t', quotechar='"')
-
+        dates = []
         days = []
-        for rowNum, row in enumerate(reader):
-            if rowNum == 0:
-                #dates
-                dates = row[1:]
-                for date in dates:
-                    days.append({})
-            else:
-                #data
-                checkName = row[0]
-                for dayIndex, value in enumerate(row[1:]):
-                    days[dayIndex][checkName] = value
-        ifile.close()
-
+        fileName = os.path.join("stats", "stats.csv")
+        if os.path.exists(fileName):
+            ifile = open(fileName, "r")
+            reader = csv.reader(ifile, delimiter='\t', quotechar='"')
+            for rowNum, row in enumerate(reader):
+                if rowNum == 0:
+                    #dates
+                    dates = row[1:]
+                    for date in dates:
+                        days.append({})
+                else:
+                    #data
+                    checkName = row[0]
+                    for dayIndex, value in enumerate(row[1:]):
+                        days[dayIndex][checkName] = value
+            ifile.close()
         return (dates, days)
 
     def update_stats(self, today):
@@ -328,14 +323,15 @@ Gli errori sono visualizzati come file GPX e liste di link OSM / JOSM remote / i
             todayData[check.name] = errorsNumber
 
         #Add empty values to old stats for new checks
-        for check in self.checks.keys():
-            if check not in self.days[-1]:
-                for day in self.days:
-                    day[check] = "-"
-        #Add empty values to new stats for missing checks
-        for checkName in self.days[-1]:
-            if check not in todayData:
-                todayData[checkName] = "-"
+        if self.days != []:
+            for checkName in self.checks.keys():
+                if checkName not in self.days[-1]:
+                    for day in self.days:
+                        day[checkName] = "-"
+            #Add empty values to new stats for missing checks
+            for checkName in self.days[-1]:
+                if checkName not in todayData:
+                    todayData[checkName] = "-"
 
         self.days.append(todayData)
 
