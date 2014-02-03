@@ -124,13 +124,15 @@ def update_country_o5m_with_osmupdate(OSMDIR, country, countryPOLY, countryO5M, 
 def filter_regions(OSMDIR, databases, countryO5M):
     """Use POLY files to create a region o5m file from national file
     """
+    regions = []
     for dbName, database in databases.iteritems():
-        if database.zoneType == "region":
-            regionName = database.zoneName
-            regionO5M = os.path.join(OSMDIR, "%s-latest.o5m" % regionName)
-            polyFile = os.path.join("boundaries", "poly", "%s.poly" % regionName)
-            print "\n- cut regional file\n%s" % regionO5M
-            call('osmconvert -B=%s --drop-broken-refs %s -o=%s' % (polyFile, countryO5M, regionO5M), shell=True)
+        if database.zoneType == "region" and database.zoneName not in regions:
+            regions.append(database.zoneName)
+    for region in regions:
+        regionO5M = os.path.join(OSMDIR, "%s-latest.o5m" % region)
+        polyFile = os.path.join("boundaries", "poly", "%s.poly" % region)
+        print "\n- cut regional file\n%s" % regionO5M
+        call('osmconvert -B=%s --drop-broken-refs %s -o=%s' % (polyFile, countryO5M, regionO5M), shell=True)
 
 
 def filter_tags(OSMDIR, databases):
