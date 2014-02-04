@@ -10,6 +10,7 @@ import os
 
 #local import
 from configuration import dbConfig, checksConfig
+import utils
 
 
 class Config:
@@ -55,18 +56,14 @@ class Config:
                           os.path.join("output", "gpx"),
                           os.path.join("output", "old_gpx"),
                           os.path.join("output", "geojson"),
+                          os.path.join("html", "gpx"),
                           "stats",
                           self.DROPBOXDIR,
                           self.TILEMILLDIR):
-            self.make_dir(directory)
+            if directory:
+                utils.make_dir(directory)
 
         #self.print_config()     #debug
-
-    def make_dir(self, path):
-        """Create a directory if it does not already exist
-        """
-        if not os.path.exists(path):
-            os.makedirs(path)
 
     def print_config(self):
         """Print configuration

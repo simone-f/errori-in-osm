@@ -5,6 +5,7 @@
 
 from subprocess import call
 import os
+import utils
 
 
 class WebPagesCreator():
@@ -30,9 +31,8 @@ class WebPagesCreator():
                 if "Mappa" in check.output:
                     #Subpage displays errors on a clickable map with JOSM remote links
                     subPageDir = os.path.join("html", check.name)
+                    utils.make_dir(subPageDir)
                     subPage = os.path.join(subPageDir, "%s.html" % check.name)
-                    if not os.path.exists(subPageDir):
-                        os.makedirs(subPageDir)
                     subPageCode = MapSubpage(check).code
                 self.save_html_file(subPage, subPageCode)
 

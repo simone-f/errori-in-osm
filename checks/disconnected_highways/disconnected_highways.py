@@ -208,7 +208,10 @@ def export_as_GeoJSON(database, user, password, wayTypes):
             tableName = wayType
         else:
             tableName = "primaryw"
-        geojsonFile = os.path.join("output", "geojson", "disconnected_highways", "%s.GeoJSON" % wayType)
+        geojsonDir = os.path.join("output", "geojson", "disconnected_highways")
+        if not os.path.exists(geojsonDir):
+            os.makedirs(geojsonDir)
+        geojsonFile = os.path.join(geojsonDir, "%s.GeoJSON" % wayType)
         if os.path.isfile(geojsonFile):
             call("rm %s" % geojsonFile, shell=True)
         sql = "SELECT osmid, geometry FROM %s" % tableName
