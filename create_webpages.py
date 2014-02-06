@@ -257,20 +257,21 @@ Gli errori sono visualizzati come file GPX e liste di link OSM / JOSM remote / i
            errors info
         """
         errors = []
-        for event, element in etree.iterparse(fileName, events=("end",)):
-            if element.tag[-3:] == "wpt":
-                lat = element.get("lat")
-                lon = element.get("lon")
-                if check.name == "lonely_nodes":
-                    desc = "lonely"
-                    if len(errors) == 0:
-                        osmid = 0
+        if os.path.exists(fileName):
+            for event, element in etree.iterparse(fileName, events=("end",)):
+                if element.tag[-3:] == "wpt":
+                    lat = element.get("lat")
+                    lon = element.get("lon")
+                    if check.name == "lonely_nodes":
+                        desc = "lonely"
+                        if len(errors) == 0:
+                            osmid = 0
+                        else:
+                            osmid += 1
                     else:
-                        osmid += 1
-                else:
-                    desc = element[0].text
-                    osmid = element[2][0].text
-                errors.append([osmid, desc, lon, lat, None])
+                        desc = element[0].text
+                        osmid = element[2][0].text
+                    errors.append([osmid, desc, lon, lat, None])
         return errors
 
     def find_new_errors(self, check):
