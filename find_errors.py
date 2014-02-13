@@ -80,7 +80,7 @@ class App():
         self.databaseAccessInfo = config.databaseAccess
         self.user = config.user
         self.password = config.password
-        self.databases = config.databases
+        allDatabases = config.databases
         self.checks = config.checks
 
         if self.args.execute_check is not None and \
@@ -89,6 +89,9 @@ class App():
 
         #Create a dictionary with the checks that must be executed
         self.checksToDo = self.read_checks_to_do()
+        self.databases = {}
+        for dbName in self.checksToDo["inDatabase"]:
+            self.databases[dbName] = allDatabases[dbName]
 
         #Print checks and exit
         if self.args.print_checks:
@@ -165,7 +168,7 @@ class App():
             for check in checksInDb:
                 sql += "\nDROP TABLE IF EXISTS %s;" % check.name
             self.execute_query(dbName, sql)
-            #Altre
+            #Other
             if dbName == "highway":
                 sql = "\nDROP VIEW IF EXISTS %s;" % 'junctions'
                 self.execute_query(dbName, sql)
@@ -183,7 +186,8 @@ class App():
                              downloadOSM,
                              updateOSM=True,
                              filterOSM=True,
-                             updateDb=True)
+                             updateDb=True,
+                             databases=self.databases)
         if not status:
             sys.exit("Nothing to do.")
 

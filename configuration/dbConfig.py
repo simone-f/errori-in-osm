@@ -6,19 +6,19 @@ class AllDatabases():
     def __init__(self):
         #Databases properties
         dbInfo = {
-            'highway' :
+            'highway':
                 {"name": 'highway',
                  "filter": '--keep="highway=*" --keep-relations="type=restriction"',
                  "zoneType": "nation",
                  "zoneName": "italy"},
 
-            'buildings_landuse_barrier_veneto' :
+            'buildings_landuse_barrier_veneto':
                 {"name": 'buildings_landuse_barrier_veneto',
                  "filter": '--keep="building=* OR landuse=* OR barrier=*" --keep-ways="*!=*"',
                  "zoneType": "region",
                  "zoneName": "Veneto"},
 
-            'wikipedia_phone' :
+            'wikipedia_phone':
                 {"name": 'wikipedia_phone',
                  "filter": '--keep="phone=* OR contact:phone=* OR wikipedia=*"',
                  "zoneType": "nation",

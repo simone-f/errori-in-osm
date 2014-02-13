@@ -16,18 +16,19 @@ from subprocess import call
 from read_config import Config
 
 
-def main(config, downloadOSM, updateOSM, filterOSM, updateDb):
-    """Update (OSM file --> create diff file -->) PostGIS databases
+def main(config, downloadOSM, updateOSM, filterOSM, updateDb, databases=None):
+    """Update (OSM file --> create diff files -->) PostGIS databases
     """
     #Configuration
     OSMDIR = config.OSMDIR
-    databases = config.databases
     databaseAccessInfo = config.databaseAccess
     country = config.country
     countryPBF = config.countryPBF
     countryO5M = config.countryO5M
     oldCountryO5M = config.oldCountryO5M
     countryPOLY = config.countryPOLY
+    if databases is None:
+        databases = config.databases
 
     if downloadOSM:
         #Force the download of country OSM data
@@ -125,7 +126,7 @@ def filter_regions(OSMDIR, databases, countryO5M):
     """Use POLY files to create a region o5m file from national file
     """
     regions = []
-    for dbName, database in databases.iteritems():
+    for database in databases.values():
         if database.zoneType == "region" and database.zoneName not in regions:
             regions.append(database.zoneName)
     for region in regions:
@@ -139,18 +140,15 @@ def filter_tags(OSMDIR, databases):
     """Extract OSM data from italy.o5m with osmfilter
     """
     print "\n== Filtro dati OSM con tag prescelti =="
-    for dbName, database in databases.iteritems():
-        print "\n", dbName
-        dbFilter = database.filter
-        zoneName = database.zoneName
-        dataO5M = os.path.join(OSMDIR, "%s-latest.o5m" % zoneName)
-        filteredO5M = os.path.join(OSMDIR, "%s-latest.o5m" % dbName)
-        oldFilteredO5M = os.path.join(OSMDIR, "%s.o5m" % dbName)
+    for db in databases.values():
+        dataO5M = os.path.join(OSMDIR, "%s-latest.o5m" % db.zoneName)
+        filteredO5M = os.path.join(OSMDIR, "%s-latest.o5m" % db.name)
+        oldFilteredO5M = os.path.join(OSMDIR, "%s.o5m" % db.name)
         if os.path.isfile(filteredO5M):
             print "- rinomino file vecchio come\n  %s" % oldFilteredO5M
             call("mv %s %s" % (filteredO5M, oldFilteredO5M), shell=True)
         print "- filtro i dati"
-        command = 'osmfilter %s %s -o=%s' % (dataO5M, dbFilter, filteredO5M)
+        command = 'osmfilter %s %s -o=%s' % (dataO5M, db.filter, filteredO5M)
         print command
         call(command, shell=True)
 
@@ -159,11 +157,11 @@ def create_change_files(OSMDIR, databases):
     """Create diff file with changes
     """
     print "\n== Creo file dei cambiamenti =="
-    for dbName in databases.keys():
-        print "\n %s " % dbName
-        oldFilteredO5m = os.path.join(OSMDIR, "%s.o5m" % dbName)
-        filteredO5M = os.path.join(OSMDIR, "%s-latest.o5m" % dbName)
-        changesO5C = os.path.join(OSMDIR, "diff_%s.osc" % dbName)
+    for db in databases.values():
+        print "\n %s " % db.name
+        oldFilteredO5m = os.path.join(OSMDIR, "%s.o5m" % db.name)
+        filteredO5M = os.path.join(OSMDIR, "%s-latest.o5m" % db.name)
+        changesO5C = os.path.join(OSMDIR, "diff_%s.osc" % db.name)
         print "\n  %s" % changesO5C
         call("osmconvert %s %s --diff --fake-lonlat -o=%s" % (oldFilteredO5m, filteredO5M, changesO5C), shell=True)
         fileSize = os.path.getsize(changesO5C) / 1000.00
@@ -177,9 +175,9 @@ def update_db(OSMDIR, databases, (user, password)):
     #answer = raw_input("\n- Aggiorno database?[Y/n]")
     answer = "Y"
     if answer not in ("n", "N"):
-        for dbName in databases.keys():
-            print "\n\n %s" % dbName
-            changesO5C = os.path.join(OSMDIR, "diff_%s.osc" % dbName)
+        for db in databases.values():
+            print "\n\n %s" % db.name
+            changesO5C = os.path.join(OSMDIR, "diff_%s.osc" % db.name)
 
             """print "\n- drop indexes"
             sql = "DROP INDEX idx_nodes_geom;"
@@ -187,10 +185,10 @@ def update_db(OSMDIR, databases, (user, password)):
             sql += "\nDROP INDEX idx_relation_members_member_id_and_type;
             sql = "DROP INDEX idx_ways_linestring;"
             sql += "\nDROP INDEX ways_tags_idx;"
-            call("echo \"%s\"| psql -U %s -d %s" % (sql, user, dbName), shell=True)"""
+            call("echo \"%s\"| psql -U %s -d %s" % (sql, user, db.name), shell=True)"""
 
             print "\n- update database with osmosis --wpc"
-            call("osmosis --rxc %s --wpc database=%s user=%s password=%s" % (changesO5C, dbName, user, password), shell=True)
+            call("osmosis --rxc %s --wpc database=%s user=%s password=%s" % (changesO5C, db.name, user, password), shell=True)
 
             """print "\n- create indexes"
             sql = "CREATE INDEX idx_nodes_geom ON nodes USING gist (geom);"
@@ -198,7 +196,7 @@ def update_db(OSMDIR, databases, (user, password)):
             sql += "\nCREATE INDEX idx_relation_members_member_id_and_type ON relation_members USING btree (member_id, member_type);
             sql = "\nCREATE INDEX idx_ways_linestring ON ways USING gist (linestring);"
             sql += "\nCREATE INDEX ON ways USING gist (tags);"
-            call("echo \"%s\"| psql -U %s -d %s" % (sql, user, dbName), shell=True)"""
+            call("echo \"%s\"| psql -U %s -d %s" % (sql, user, db.name), shell=True)"""
 
             print "\n- analyze"
             sql = "SET maintenance_work_mem TO '128MB';"
@@ -207,16 +205,16 @@ def update_db(OSMDIR, databases, (user, password)):
             sql += "\nANALYZE ways;"
             sql += "\nANALYZE relations;"
             sql += "\nSET maintenance_work_mem TO '16MB';"
-            call("echo \"%s\"| psql -U %s -d %s" % (sql, user, dbName), shell=True)
+            call("echo \"%s\"| psql -U %s -d %s" % (sql, user, db.name), shell=True)
 
     #Remove old files
     #answer = raw_input("\n- Cancellare diff e files vecchi?[y/N]")
     #answer = "y"
     answer = "n"
     if answer in ("y", "Y"):
-        for dbName in databases.keys():
-            osmO5M = os.path.join(OSMDIR, "%s.o5m" % dbName)
-            changesO5C = os.path.join(OSMDIR, "diff_%s.osc" % dbName)
+        for db in databases.values():
+            osmO5M = os.path.join(OSMDIR, "%s.o5m" % db.name)
+            changesO5C = os.path.join(OSMDIR, "diff_%s.osc" % db.name)
             for filename in (osmO5M, changesO5C):
                 if os.path.isfile(filename):
                     call("rm %s" % filename, shell=True)

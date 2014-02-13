@@ -21,7 +21,7 @@ class Config:
         configParser = ConfigParser.RawConfigParser()
         configParser.read(configFile)
 
-        #directory with OSM data
+        #OSM data
         self.OSMDIR = configParser.get("general", "OSM_DIR")
         if self.OSMDIR == "":
             sys.exit("\nScrivi nel file './configuration/config' il percorso della directory in cui scaricare i dati OSM.")
@@ -30,16 +30,17 @@ class Config:
         self.countryO5M = os.path.join(self.OSMDIR, "%s-latest.o5m" % self.country)
         self.oldCountryO5M = os.path.join(self.OSMDIR, "%s.o5m" % self.country)
         self.countryPOLY = os.path.join("boundaries", "poly", "%s.poly" % self.country)
-        #databaseAccess
+        #Database access
         self.user = configParser.get("database_access", "user")
         self.password = configParser.get("database_access", "password")
         if self.user == "" or self.password == "":
             sys.exit("\nScrivi il nome e la password dello user del database PostGIS in:%s" % configFile)
         self.databaseAccess = (self.user, self.password)
 
-        #Read databases configuration
+        #Databases configurations
         self.databases = dbConfig.AllDatabases().databases
-        #Read checks configuration
+
+        #Checks configuration
         self.checks = checksConfig.AllChecks().checks
 
         #Optional
@@ -48,7 +49,7 @@ class Config:
         #dropbox directory
         self.DROPBOXDIR = configParser.get("general", "DROPBOX_DIR")
 
-        #Make directories
+        #Make missing directories
         for directory in (self.OSMDIR,
                           "false_positives",
                           os.path.join("false_positives", "from_users"),
