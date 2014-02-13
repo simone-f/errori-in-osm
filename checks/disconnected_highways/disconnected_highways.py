@@ -39,7 +39,6 @@ def find(user, password):
     tableName = "italia"
     sqlFile = os.path.join("boundaries", "italia_in_inspector.sql")
     call("shp2pgsql -s 4326 %s %s %s > %s" % (shapeFile, tableName, database, sqlFile), shell=True)
-    #call("rm %s" % sqlFile, shell=True)
     call("psql -h localhost -U %s -d %s -f %s" % (user, database, sqlFile), shell=True)
     #call("echo 'CREATE INDEX ON italia USING GIST (geom);'| psql -U %s -d %s" % (user, database), shell = True)
     #call("echo 'ANALYZE italia;'| psql -U %s -d %s" % (user, database), shell = True)
@@ -59,6 +58,10 @@ def find(user, password):
 
     #export to GeoJSON for each highway type
     export_as_GeoJSON(database, user, password, wayTypes)
+
+    for fileName in (errorsFile, sqlFile):
+        if os.path.isfile(fileName):
+            call("rm %s" % fileName, shell=True)
 
 
 def download_errors_from_OSM_Inspector(errorsFile):
