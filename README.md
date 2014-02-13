@@ -9,68 +9,55 @@ Autore: Simone F. <groppo8@gmail.com>
 
 Altri autori: Daniele Forsi (miglioramento ricerca nomi non conformi, controllo spazi nei nomi, script server per falsi positivi)
 
-Licenza degli script Python
+Contributori:
 
+- marco braida (segnalazione bugs ed integrazioni file README.md)
 
+- Aury88 (proposta per controllo uscite da rotatoria senza turn-restriction, con laterale)
+
+Attribuzioni
+------------
+- File img/info-icon.svg, [netalloy-info-by-netalloy](http://openclipart.org/detail/37255/netalloy-info-by-netalloy) (Public Domain)
+
+- File img/Star.svg, [star-by-candyadams](http://openclipart.org/detail/93169/star-by-candyadams) (Public Domain)
+
+- File ./boundaries/*, ottenuti da [shape ISTAT](http://www.istat.it/it/note-legali) (CC BY 3.0)  
+
+- Dati © [OpenStreetMap contributors](http://www.openstreetmap.org/copyright) (ODbL), forniti da GEOFABRIK
+
+Licenza
+-------
 "THE BEER-WARE LICENSE" (Revision 42):
 Simone F. <groppo8@gmail.com> wrote these files. As long as you retain this notice you
 can do whatever you want with this stuff. If we meet some day, and you think
 this stuff is worth it, you can buy me a beer in return
 
-
-Contributori
---------------
-marco braida (segnalazione bugs ed integrazioni file README.md)
-
-Aury88 (proposta per controllo uscite da rotatoria senza turn-restriction, con laterale)
-
-Attribuzioni
-------------
--   File img/info-icon.svg (Public Domain)
-
-    http://openclipart.org/detail/37255/netalloy-info-by-netalloy
-
--   File img/Star.svg (Public Domain)
-
-    http://openclipart.org/detail/93169/star-by-candyadams
-
--   File ./boundaries/*, ottenuti da shape ISTAT (CC BY 3.0)
-
-    http://www.istat.it/it/note-legali
-
--   Dati © OpenStreetMap contributors (ODbL), forniti da GEOFABRIK
-
-    http://www.openstreetmap.org/copyright
-
-
 Tempo richiesto per l'esecuzione degli script
 ---------------------------------------------
-- Per la creazione dei database con i dati italiani (python create_database.py) occorrono circa 2 ore e mezza. Gli aggiornamenti successivi impiegheranno meno tempo. Per i cambiamenti occorsi in OSM in un giorno: ~ 10 min.
+- Per la creazione dei database con i dati italiani (python create_database.py) occorrono circa 2 ore e mezza. Gli aggiornamenti successivi impiegheranno meno tempo (~ 15 min per i cambiamenti occorsi in OSM in un giorno).
 
 - Per la ricerca degli errori: ~30 min.
-
 
 Software necessari
 ------------------
 - postgis
 - postgresql-contrib
 - shp2pgsql (contenuto nel pacchetto postgis)
-- gpsbabel (per controllo lonely_nodes)
 - python-psycopg2
 - osmosis
-- ogr2ogr (contenuto nel pacchetto gdal-bin )
-- gpsbabel (per la conversione dei nodi solitari OSM --> GPX)
-- libnotify-bin (per notifiche Ubuntu, una sola riga commentabile in script)
+- ogr2ogr (contenuto nel pacchetto gdal-bin)
+- gpsbabel (per la conversione OSM --> GPX in controllo lonely_nodes)
 - python-lxml
-
-Se si usa postgis >= 2.0.3-2~raring5 da UbuntuGIS:
-postgresql-9.1-postgis-2.0-scripts
 
 Per installarli tutti da terminale digitare:
 
-	sudo apt-get install postgis python-psycopg2 osmosis gdal-bin libnotify-bin python-lxml postgresql-contrib gpsbabel
+    sudo apt-get install postgis python-psycopg2 osmosis gdal-bin libnotify-bin python-lxml postgresql-contrib gpsbabel
 
-Per evitare di inserire manualmente la password creare un file .pgpass come da [guida](http://www.postgresql.org/docs/9.2/static/libpq-pgpass.html).
+- Per evitare di inserire manualmente la password creare un file .pgpass come da [guida](http://www.postgresql.org/docs/9.2/static/libpq-pgpass.html).
+
+- Se si installa postgis 2.1.0 da UbuntuGIS e si verifica [questo bug](http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=721721) creare un link simbolico corretto, tramite:
+ 
+    sudo ln -s postgis-jdbc-2.1.0~rc1.jar postgis.jar
 
 
 ### Altri software necessari
@@ -78,34 +65,34 @@ Per evitare di inserire manualmente la password creare un file .pgpass come da [
 - osmfilter
 - osmupdate
 
-sistemi a 32 bits:
-download da terminale
+per sistemi a 32 bit, scaricare i programmi tramite:
 
-        sudo wget http://m.m.i24.cc/osmconvert32 -O /usr/bin/osmconvert
-        sudo wget http://m.m.i24.cc/osmupdate32 -O /usr/bin/osmupdate
-        sudo wget http://m.m.i24.cc/osmfilter32 -O /usr/bin/osmfilter
-        sudo chmod +x /usr/bin/osmconvert /usr/bin/osmupdate /usr/bin/osmfilter
+    sudo wget http://m.m.i24.cc/osmconvert32 -O /usr/bin/osmconvert
+    sudo wget http://m.m.i24.cc/osmupdate32 -O /usr/bin/osmupdate
+    sudo wget http://m.m.i24.cc/osmfilter32 -O /usr/bin/osmfilter
+    sudo chmod +x /usr/bin/osmconvert /usr/bin/osmupdate /usr/bin/osmfilter
 
-sistemi a 64 bits:
-si possono usare le versioni precedenti (32 bits) installando il pacchetto ia32-libs, oppure scaricare e compilare le versioni a 64 bit
+per sistemi a 64 bit, scaricare e compilare tramite:
 
-        sudo apt-get update; sudo apt-get install build-essential
-        wget -O - http://m.m.i24.cc/osmconvert.c | cc -x c - -lz -O3 -o osmconvert
-        wget -O - http://m.m.i24.cc/osmfilter.c | cc -x c - -lz -O3 -o osmfilter
+    sudo apt-get update; sudo apt-get install build-essential
+    wget -O - http://m.m.i24.cc/osmconvert.c | cc -x c - -lz -O3 -o osmconvert
+    wget -O - http://m.m.i24.cc/osmfilter.c | cc -x c - -lz -O3 -o osmfilter
+    wget -O - http://m.m.i24.cc/osmupdate.c | cc -x c - -lz -O3 -o osmupdate
 
 
-### Software opzionali, per creare/aggiornare le cartine statiche
--   tilemill
--   imagemagick
+### Software opzionali
+- libnotify-bin, notifiche in Ubuntu
+- tilemill, per creare/aggiornare le cartine statiche
+- imagemagick, per creare/aggiornare le cartine statiche
 
-        sudo add-apt-repository ppa:developmentseed/mapbox
-        sudo apt-get update
-        sudo apt-get install tilemill imagemagick
+    sudo add-apt-repository ppa:developmentseed/mapbox
+    sudo apt-get update
+    sudo apt-get install tilemill imagemagick
 
 
 Istruzioni
 ==========
-Valide per Ubuntu 13.04.
+Valide per Ubuntu 13.10.
 
 Impostare le voci nel file di configurazione
 --------------------------------------------
@@ -122,9 +109,9 @@ Impostare le voci nel file di configurazione
 
 Creare i database Postgis tramite osmosis (schema pgsnapshot)
 -------------------------------------------------------------
-Installare PostGIS e creare i tre database necessari, tramite lo script './create_database.py'.
+Creare i tre database necessari tramite lo script 'python ./create_database.py'.
 
-Al fine di non avere un database unico, molto grande, i controlli sono eseguiti su tre database distinti, creati da file PBF, ottenuti filtrando i dati OSM nazionali con osmfilter, contenenti:
+Al fine di non avere un database unico, molto grande, i controlli sono eseguiti su tre database distinti. QUesti sono creati da tre file PBF, ottenuti filtrando i dati OSM nazionali tramite osmfilter:
 
 - elementi taggati buildings, barrier, landuse in Veneto
 - elementi taggati highway in Italia
@@ -144,10 +131,10 @@ Cosa fa:
 1.  (-u) scarica ed aggiorna i file OSM ed i database
     Fasi:
     - rinomina come nomefile.o5m, i tre file con dati OSM con cui si erano creati i database
-    - aggiorna (con osmupdate) il vecchio file italy.o5m
-    - estrae (osmfilter) da italy-latest.o5m i tre nomefile-latest.o5m aggiornati, con i tag voluti
-    - crea (osmconvert) i file OSC (= OSM change) con le differenze tra nomefile-latest.o5m e nomefile.o5m
-    - aggiorna (osmosis) i tre database applicando i file OSC ottenuti
+    - aggiorna il vecchio file italy.o5m (osmupdate)
+    - estrae da italy-latest.o5m i tre nomefile-latest.o5m aggiornati, con i tag voluti (osmfilter)
+    - crea i file OSC (= OSM change) con le differenze tra nomefile-latest.o5m e nomefile.o5m (osmconvert)
+    - aggiorna i tre database applicando i file OSC ottenuti (osmosis)
 2.  (-e) esegue i controlli creando nei database le tabelle con le segnalazioni
 3.  esporta come file GPX le tabelle con gli errori trovati
 
@@ -170,7 +157,6 @@ I falsi positivi vanno scritti nella directory ./false_positive o alternativamen
 
 Cartine
 -------
-
 Lanciando "create_webpages.py --map" lo script aggiorna delle cartine che devono essere state create precedentemente come progetti Tilemill.
 
 Per ogni controllo, vengono sovrapposti un GPX vecchio (punti verdi) ed il più recente (punti rossi). Man mano che gli errori vengono corretti i punti rossi spariscono, scoprendo quelli verdi.
