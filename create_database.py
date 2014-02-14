@@ -58,8 +58,8 @@ class App():
             if self.args.database in allDatabases.keys():
                 databases = {self.args.database: allDatabases[self.args.database]}
             else:
-                print "\nNome non presente tra quelli di cui si conosce la configurazione (configution/dbConfig.py):\n %s" % "\n ".join(allDatabases.keys())
-                sys.exit("Nome database immmesso: %s" % self.args.database)
+                print "\nNome non presente tra quelli di cui si conosce la configurazione (configuration/dbConfig.py):\n %s" % "\n ".join(allDatabases.keys())
+                sys.exit("Nome database immesso: %s" % self.args.database)
 
         #Print info
         self.print_databases_info(databases)
@@ -201,7 +201,7 @@ class App():
         call("echo 'CREATE INDEX ON relations USING GIN (tags);'| psql -U %s -d %s" % (self.user, name), shell=True)
 
     def vacuum_analyze(self, name):
-        """Vacuum and anlyze the database
+        """Vacuum and analyze the database
         """
         print "\n6- vacuum analyze:"
         call("echo 'VACUUM ANALYZE;'| psql -U %s -d %s" % (self.user, name), shell=True)
