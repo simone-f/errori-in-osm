@@ -141,6 +141,7 @@ def filter_tags(OSMDIR, databases):
     """
     print "\n== Filtro dati OSM con tag prescelti =="
     for db in databases.values():
+        print "\n", db.name
         dataO5M = os.path.join(OSMDIR, "%s-latest.o5m" % db.zoneName)
         filteredO5M = os.path.join(OSMDIR, "%s-latest.o5m" % db.name)
         oldFilteredO5M = os.path.join(OSMDIR, "%s.o5m" % db.name)
@@ -162,10 +163,10 @@ def create_change_files(OSMDIR, databases):
         oldFilteredO5m = os.path.join(OSMDIR, "%s.o5m" % db.name)
         filteredO5M = os.path.join(OSMDIR, "%s-latest.o5m" % db.name)
         changesO5C = os.path.join(OSMDIR, "diff_%s.osc" % db.name)
-        print "\n  %s" % changesO5C
+        print "  %s" % changesO5C
         call("osmconvert %s %s --diff --fake-lonlat -o=%s" % (oldFilteredO5m, filteredO5M, changesO5C), shell=True)
         fileSize = os.path.getsize(changesO5C) / 1000.00
-        print "\n  size: %f kB" % fileSize
+        print "  size: %f kB" % fileSize
 
 
 def update_db(OSMDIR, databases, (user, password)):

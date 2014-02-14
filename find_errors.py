@@ -89,9 +89,14 @@ class App():
 
         #Create a dictionary with the checks that must be executed
         self.checksToDo = self.read_checks_to_do()
-        self.databases = {}
-        for dbName in self.checksToDo["inDatabase"]:
-            self.databases[dbName] = allDatabases[dbName]
+
+        if (self.args.download_OSM_data_and_update_db or \
+           self.args.update_OSM_data_and_update_db) \
+           and not self.args.execute_check\
+           and not self.args.execute_checks:
+            self.databases = allDatabases
+        else:
+            self.databases = {allDatabases[name] for name in self.checksToDo["inDatabase"]}
 
         #Print checks and exit
         if self.args.print_checks:
