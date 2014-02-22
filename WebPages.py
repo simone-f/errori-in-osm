@@ -163,7 +163,7 @@ o clicca sui link riguardanti i singoli errori nelle pagine del tipo "Lista".'
     def info_table(self):
         code = '\n      <div id="info" style="display:none">'
         code += '\n        <table id="tabella_info">'
-        code += '\n          <tr><td>Codice:</td><td><a href = "http://bit.ly/YQL8Wn">script</a> %s</td></tr>' % self.app.version
+        code += '\n          <tr><td>Codice:</td><td><a href="https://github.com/simone-f/errori-in-osm" target="_blank">script</a> %s</td></tr>' % self.app.version
         code += '\n          <tr><td>Autore:</td><td>Simone F. groppo8@gmail.com</td></tr>'
         code += '\n          <tr><td>Altri autori:</td><td>Daniele Forsi (migliorato controllo nomi non conformi, controllo troppi spazi in nomi strade, script server falsi positivi)</td></tr>'
         code += '\n          <tr><td rowspan="2">Contributori:</td><td>Marco Braida (testing, segnalazione bugs ed integrazione README)</td></tr>'
