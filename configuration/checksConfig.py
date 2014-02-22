@@ -74,18 +74,18 @@ class AllChecks():
             "bitlyGpx"   : 'http://bit.ly/11N5yiJ',
             "bitlyHtml"  : 'http://bit.ly/10bBmzT'},
 
-            "missing_no_turn_on_roundabout_exit": {
-            "ref": 5,
-            "title"      : 'Direzione obbligata mancante su uscita da rotatoria',
-            "description": 'aggiungere l\'<a target="_blank" href="http://wiki.openstreetmap.org/wiki/JOSM_Relations_and_Turn_Based_Restrictions">obbligo di proseguire</a> dritti dall\'uscita di rotatoria, per evitare <a href="https://dl.dropboxusercontent.com/u/41550819/OSM/Errori_in_Italia_Grp/img/no_turn.png">inversioni</a>.',
-            "filter"     : 'Si consiglia di usare il plugin "turn restrictions" per JOSM (<a target="_blank" href="http://www.youtube.com/watch?v=eREgLuuKhpc">video</a>).',
-            "zone"       : 'Italia',
-            "country"    : 'Italia',
-            "type"       : 'geom',
-            "database"   : 'highway',
-            "output"     : ['GPX', 'Lista'],
-            "bitlyGpx"   : 'http://bit.ly/163rzdv',
-            "bitlyHtml"  : 'http://bit.ly/YQKJD8'},
+            #"missing_no_turn_on_roundabout_exit": {
+            #"ref": 5,
+            #"title"      : 'Direzione obbligata mancante su uscita da rotatoria',
+            #"description": 'aggiungere l\'<a target="_blank" href="http://wiki.openstreetmap.org/wiki/JOSM_Relations_and_Turn_Based_Restrictions">obbligo di proseguire</a> dritti dall\'uscita di rotatoria, per evitare <a href="https://dl.dropboxusercontent.com/u/41550819/OSM/Errori_in_Italia_Grp/img/no_turn.png">inversioni</a>.',
+            #"filter"     : 'Si consiglia di usare il plugin "turn restrictions" per JOSM (<a target="_blank" href="http://www.youtube.com/watch?v=eREgLuuKhpc">video</a>).',
+            #"zone"       : 'Italia',
+            #"country"    : 'Italia',
+            #"type"       : 'geom',
+            #"database"   : 'highway',
+            #"output"     : ['GPX', 'Lista'],
+            #"bitlyGpx"   : 'http://bit.ly/163rzdv',
+            #"bitlyHtml"  : 'http://bit.ly/YQKJD8'},
 
             "wrong_refs": {
             "ref": 6,
