@@ -40,7 +40,7 @@ def find(osmData, tmp):
 
     #Export as GPX file
     print "\n- Esporta come gpx"
-    gpxFile = os.path.join("gpx_out", "lonely_nodes.gpx")
+    gpxFile = os.path.join("output", "gpx", "lonely_nodes.gpx")
     if os.path.isfile(gpxFile):
         call('rm %s' % gpxFile, shell=True)
     call('gpsbabel -i osm -f %s -o gpx -F %s' % (lonelyNodesOSM, gpxFile), shell=True)
