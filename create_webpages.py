@@ -152,9 +152,10 @@ Gli errori sono visualizzati come file GPX e liste di link OSM / JOSM remote / i
         """
         print "\n- Leggo i file con le segnalazioni, presenti in './output/gpx'"
         checks = {}
-        for infile in glob.glob(os.path.join("output", "gpx", "*.gpx")):
-            name = infile.split("/")[-1][:-4]
-            checks[name] = self.allChecks[name]
+        for checkName in self.allChecks:
+            fileName = os.path.join("output", "gpx", "%s.gpx" % checkName)
+            if os.path.exists(fileName):
+                checks[checkName] = self.allChecks[checkName]
         return checks
 
     def checks_per_database(self):
