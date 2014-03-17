@@ -15,5 +15,9 @@ WHERE tags ->'highway' IN (
 'motorway',
 'motorway_link') AND
 NOT tags ?| ARRAY['ref', 'reg_ref', 'loc_ref', 'old_ref', 'official_ref'] AND
-tags -> 'name' ~~ any(ARRAY['sp%', 'ss%', 's.p.%', 'SS%', 'S.S.%', 'SP%', 'S.P.%']) AND
+tags -> 'name' ~~* any(ARRAY[
+'sc%', 's.c.%',
+'sp%', 's.p.%',
+'sr%', 's.r.%',
+'ss%', 's.s.%']) AND
 tags -> 'name' ~ '[[:digit:]]';

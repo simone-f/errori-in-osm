@@ -17,22 +17,22 @@ AND tags ->'highway' IN (
 'motorway_link') AND
 (CASE WHEN tags ? 'ref'
 THEN
-tags -> 'ref' ~~ any(ARRAY['Sp%','S.p.%','sp%','s.p.%','Ss%','S.s.%','ss%','s.s.%','Sr%','S.r.%','sr%','s.r.%','S.P.%','S.S.%','S.R.%','SP %','SR %','SS %','via %','Via %'])
+tags -> 'ref' ~~ any(ARRAY['Sc%','S.c.%','sc%','s.c.%','Sp%','S.p.%','sp%','s.p.%','Ss%','S.s.%','ss%','s.s.%','Sr%','S.r.%','sr%','s.r.%','S.P.%','S.S.%','S.R.%','SP %','SR %','SS %','via %','Via %'])
 END
 OR CASE WHEN tags ? 'reg_ref'
 THEN
-tags -> 'reg_ref' ~~ any(ARRAY['Sp%','S.p.%','sp%','s.p.%','Ss%','S.s.%','ss%','s.s.%','Sr%','S.r.%','sr%','s.r.%','S.P.%','S.S.%','S.R.%','SP %','SR %','SS %','via %','Via %'])
+tags -> 'reg_ref' ~~ any(ARRAY['Sc%','S.c.%','sc%','s.c.%','Sp%','S.p.%','sp%','s.p.%','Ss%','S.s.%','ss%','s.s.%','Sr%','S.r.%','sr%','s.r.%','S.P.%','S.S.%','S.R.%','SP %','SR %','SS %','via %','Via %'])
 END
 OR CASE WHEN tags ? 'loc_ref'
 THEN
-tags -> 'loc_ref' ~~ any(ARRAY['Sp%','S.p.%','sp%','s.p.%','Ss%','S.s.%','ss%','s.s.%','Sr%','S.r.%','sr%','s.r.%','S.P.%','S.S.%','S.R.%','SP %','SR %','SS %','via %','Via %'])
+tags -> 'loc_ref' ~~ any(ARRAY['Sc%','S.c.%','sc%','s.c.%','Sp%','S.p.%','sp%','s.p.%','Ss%','S.s.%','ss%','s.s.%','Sr%','S.r.%','sr%','s.r.%','S.P.%','S.S.%','S.R.%','SP %','SR %','SS %','via %','Via %'])
 END
 OR CASE WHEN tags ? 'old_ref'
 THEN
-tags -> 'old_ref' ~~ any(ARRAY['Sp%','S.p.%','sp%','s.p.%','Ss%','S.s.%','ss%','s.s.%','Sr%','S.r.%','sr%','s.r.%','S.P.%','S.S.%','S.R.%','SP %','SR %','SS %','via %','Via %'])
+tags -> 'old_ref' ~~ any(ARRAY['Sc%','S.c.%','sc%','s.c.%','Sp%','S.p.%','sp%','s.p.%','Ss%','S.s.%','ss%','s.s.%','Sr%','S.r.%','sr%','s.r.%','S.P.%','S.S.%','S.R.%','SP %','SR %','SS %','via %','Via %'])
 END
 OR CASE WHEN tags ? 'official_ref'
 THEN
-tags -> 'official_ref' ~~ any(ARRAY[ 'Sp%','S.p.%','sp%','s.p.%','Ss%','S.s.%','ss%','s.s.%','Sr%','S.r.%','sr%','s.r.%','S.P.%','S.S.%','S.R.%','SP %','SR %','SS %','via %','Via %'])
+tags -> 'official_ref' ~~ any(ARRAY['Sc%','S.c.%','sc%','s.c.%','Sp%','S.p.%','sp%','s.p.%','Ss%','S.s.%','ss%','s.s.%','Sr%','S.r.%','sr%','s.r.%','S.P.%','S.S.%','S.R.%','SP %','SR %','SS %','via %','Via %'])
 END) AND
 linestring IS NOT NULL;
