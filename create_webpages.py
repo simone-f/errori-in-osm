@@ -14,7 +14,6 @@ import time
 import csv
 from lxml import etree
 import os
-import glob
 import psycopg2
 import json
 
@@ -154,7 +153,7 @@ Gli errori sono visualizzati come file GPX e liste di link OSM / JOSM remote / i
         checks = {}
         for checkName in self.allChecks:
             fileName = os.path.join("output", "gpx", "%s.gpx" % checkName)
-            if os.path.exists(fileName):
+            if os.path.exists(fileName) and os.stat(fileName).st_size != 0:
                 checks[checkName] = self.allChecks[checkName]
         return checks
 

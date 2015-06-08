@@ -80,13 +80,14 @@ class App():
 
         #Create databases
         for db in databases.values():
-            self.create_database(db.name)
-            if db.name in ("highway", "wikipedia_phone"):
-                self.add_find_centroid_function(db.name)
-                self.import_regional_boundaries(db.name)
-            self.import_national_boundaries(db.name)
-            self.create_indexes(db.name)
-            self.vacuum_analyze(db.name)
+            result = self.create_database(db.name)
+            if result:
+                if db.name in ("highway", "wikipedia_phone"):
+                    self.add_find_centroid_function(db.name)
+                    self.import_regional_boundaries(db.name)
+                self.import_national_boundaries(db.name)
+                self.create_indexes(db.name)
+                self.vacuum_analyze(db.name)
 
     def print_databases_info(self, databases):
         """Print info
@@ -115,7 +116,7 @@ class App():
         if self.args.ask_before_creating_a_new_db:
             answer = raw_input("\n- Creo database %s tramite osmosis?[Y/n]" % name)
             if answer in ("n", "N"):
-                return
+                return False
 
         print "\n- converti file filtrato"
         print "  %s\n  -->\n  %s" % (osmO5M, osmPBF)
@@ -147,6 +148,7 @@ class App():
         #call("osmosis --rb %s --write-pgsql-dump directory=%s enableLinestringBuilder=yes enableBboxBuilder=no" % (osmPBF, pgdir), shell=True)
         #os.chdir(pgdir)
         #call("psql -U %s -d %s -f pgsnapshot_load_0.6.sql" % (self.user, name), shell=True)
+        return True
 
     def add_find_centroid_function(self, name):
         """Add function to find the centroid of the first member of a relation

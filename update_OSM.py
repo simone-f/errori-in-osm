@@ -70,7 +70,7 @@ def download_country_pbf(country, countryPBF, countryO5M, oldCountryO5M):
             call("rm %s" % filename, shell=True)
     print "\n- Scarico %s" % countryPBF
     url = "http://download.geofabrik.de/europe/%s-latest.osm.pbf" % country
-    call("wget '%s' -P %s" % (url, countryPBF), shell=True)
+    call("wget '%s' -O %s" % (url, countryPBF), shell=True)
     convert_pbf_to_o5m(countryPBF, countryO5M)
 
 
