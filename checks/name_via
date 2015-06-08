@@ -14,7 +14,8 @@ WHERE tags ? 'name' AND tags->'highway' IN (
 'trunk',
 'trunk_link'
 'motorway',
-'motorway_link') AND
+'motorway_link',
+'road') AND
 (tags->'name' ~'[[:upper:]]{2,}[[:lower:]]|[[:lower:]][[:upper:]]'
 OR
 /* names composed only of UPPER/lower case letters and some non-alphabetic characters */
