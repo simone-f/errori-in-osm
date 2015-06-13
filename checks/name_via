@@ -14,12 +14,13 @@ WHERE tags ? 'name' AND tags->'highway' IN (
 'trunk',
 'trunk_link'
 'motorway',
-'motorway_link') AND
+'motorway_link',
+'road') AND
 (tags->'name' ~'[[:upper:]]{2,}[[:lower:]]|[[:lower:]][[:upper:]]'
 OR
 /* names composed only of UPPER/lower case letters and some non-alphabetic characters */
 tags->'name' ~'^[[:upper:][:space:][:punct:]]+$|^[[:lower:][:space:][:punct:]]+$'
 OR
-tags -> 'name' ~~ any(ARRAY['P.zza %', 'p.zza %', 'P.za %', 'p.za %', 'V.le %', 'fixme', 'FIXME', 'Fixme', 'FIX ME','VIA %'])
+tags -> 'name' ~~ any(ARRAY['P.zza %', 'p.zza %', 'P.za %', 'p.za %', 'V.le %', '%fixme%', '%FIXME%', '%Fixme%', '%FIX ME%',' VIA %'])
 );
 
